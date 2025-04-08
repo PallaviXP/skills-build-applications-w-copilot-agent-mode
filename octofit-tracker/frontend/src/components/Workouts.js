@@ -4,7 +4,7 @@ const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/workouts`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/workouts/?format=api`)
       .then(response => response.json())
       .then(data => setWorkouts(data))
       .catch(error => console.error('Error fetching workouts:', error));
@@ -14,11 +14,22 @@ const Workouts = () => {
     <div className="card">
       <div className="card-body">
         <h1 className="card-title">Workouts</h1>
-        <ul className="list-group">
-          {workouts.map(workout => (
-            <li key={workout.id} className="list-group-item">{workout.name}</li>
-          ))}
-        </ul>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Workout Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {workouts.map(workout => (
+              <tr key={workout.id}>
+                <td>{workout.name}</td>
+                <td>{workout.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
