@@ -4,7 +4,7 @@ const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
-    fetch('https://congenial-rotary-phone-gx746gx5xjj29p7x-8000.app.github.dev/api/workouts')
+    fetch(`${process.env.REACT_APP_API_URL}/api/workouts`)
       .then(response => response.json())
       .then(data => setWorkouts(data))
       .catch(error => console.error('Error fetching workouts:', error));

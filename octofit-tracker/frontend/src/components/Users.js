@@ -4,7 +4,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('https://congenial-rotary-phone-gx746gx5xjj29p7x-8000.app.github.dev/api/users')
+    fetch(`${process.env.REACT_APP_API_URL}/api/users`)
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching users:', error));

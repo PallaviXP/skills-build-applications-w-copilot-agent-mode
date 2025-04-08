@@ -4,7 +4,7 @@ const Activities = () => {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    fetch('https://congenial-rotary-phone-gx746gx5xjj29p7x-8000.app.github.dev/api/activities')
+    fetch(`${process.env.REACT_APP_API_URL}/api/activities`)
       .then(response => response.json())
       .then(data => setActivities(data))
       .catch(error => console.error('Error fetching activities:', error));
