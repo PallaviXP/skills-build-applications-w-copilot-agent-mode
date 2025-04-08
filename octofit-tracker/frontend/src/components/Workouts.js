@@ -11,13 +11,15 @@ const Workouts = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Workouts</h1>
-      <ul>
-        {workouts.map(workout => (
-          <li key={workout.id}>{workout.name}</li>
-        ))}
-      </ul>
+    <div className="card">
+      <div className="card-body">
+        <h1 className="card-title">Workouts</h1>
+        <ul className="list-group">
+          {workouts.map(workout => (
+            <li key={workout.id} className="list-group-item">{workout.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

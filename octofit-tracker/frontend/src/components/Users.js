@@ -11,13 +11,15 @@ const Users = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map(user => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+    <div className="card">
+      <div className="card-body">
+        <h1 className="card-title">Users</h1>
+        <ul className="list-group">
+          {users.map(user => (
+            <li key={user.id} className="list-group-item">{user.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
