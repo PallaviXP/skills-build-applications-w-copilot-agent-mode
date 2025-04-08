@@ -2,28 +2,44 @@ from django.test import TestCase
 from .models import User, Team, Activity, Leaderboard, Workout
 
 class UserModelTest(TestCase):
-    def test_create_user(self):
-        user = User.objects.create(username="testuser", email="test@example.com", password="password")
-        self.assertEqual(user.username, "testuser")
+    def setUp(self):
+        User.objects.create(username="testuser", email="testuser@example.com", password="password123")
+
+    def test_user_creation(self):
+        user = User.objects.get(username="testuser")
+        self.assertEqual(user.email, "testuser@example.com")
 
 class TeamModelTest(TestCase):
-    def test_create_team(self):
-        team = Team.objects.create(name="Team A")
-        self.assertEqual(team.name, "Team A")
+    def setUp(self):
+        user = User.objects.create(username="teamuser", email="teamuser@example.com", password="password123")
+        Team.objects.create(name="Test Team", members=[user])
+
+    def test_team_creation(self):
+        team = Team.objects.get(name="Test Team")
+        self.assertEqual(team.name, "Test Team")
 
 class ActivityModelTest(TestCase):
-    def test_create_activity(self):
-        user = User.objects.create(username="testuser", email="test@example.com", password="password")
-        activity = Activity.objects.create(user=user, type="Running", duration=30)
-        self.assertEqual(activity.type, "Running")
+    def setUp(self):
+        user = User.objects.create(username="activityuser", email="activityuser@example.com", password="password123")
+        Activity.objects.create(user=user, activity_type="Running", duration="01:00:00")
+
+    def test_activity_creation(self):
+        activity = Activity.objects.get(activity_type="Running")
+        self.assertEqual(activity.activity_type, "Running")
 
 class LeaderboardModelTest(TestCase):
-    def test_create_leaderboard(self):
-        team = Team.objects.create(name="Team A")
-        leaderboard = Leaderboard.objects.create(team=team, score=100)
+    def setUp(self):
+        user = User.objects.create(username="leaderboarduser", email="leaderboarduser@example.com", password="password123")
+        Leaderboard.objects.create(user=user, score=100)
+
+    def test_leaderboard_creation(self):
+        leaderboard = Leaderboard.objects.get(score=100)
         self.assertEqual(leaderboard.score, 100)
 
 class WorkoutModelTest(TestCase):
-    def test_create_workout(self):
-        workout = Workout.objects.create(name="Push-ups", description="Do 20 push-ups")
-        self.assertEqual(workout.name, "Push-ups")
+    def setUp(self):
+        Workout.objects.create(name="Test Workout", description="A test workout description")
+
+    def test_workout_creation(self):
+        workout = Workout.objects.get(name="Test Workout")
+        self.assertEqual(workout.name, "Test Workout")
