@@ -4,7 +4,7 @@ const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/v1/leaderboard/`)
+    fetch(`\effective-journey-6v49wjvrr75c5j5r-8000.app.github.dev\/api\/leaderboard\/`)
       .then(response => response.json())
       .then(data => setLeaderboard(data))
       .catch(error => console.error('Error fetching leaderboard:', error));

@@ -4,7 +4,7 @@ const Teams = () => {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/v1/teams/`)
+    fetch(`\effective-journey-6v49wjvrr75c5j5r-8000.app.github.dev\/api\/teams\/`)
       .then(response => response.json())
       .then(data => setTeams(data))
       .catch(error => console.error('Error fetching teams:', error));
