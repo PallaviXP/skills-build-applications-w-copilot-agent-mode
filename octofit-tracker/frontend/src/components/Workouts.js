@@ -4,7 +4,7 @@ const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
-    fetch(`\effective-journey-6v49wjvrr75c5j5r-8000.app.github.dev\/api\/workouts\/`)
+    fetch(`https://effective-journey-6v49wjvrr75c5j5r-8000.app.github.dev\/api\/workouts\/`)
       .then(response => response.json())
       .then(data => setWorkouts(data))
       .catch(error => console.error('Error fetching workouts:', error));

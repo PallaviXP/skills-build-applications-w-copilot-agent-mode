@@ -4,7 +4,7 @@ const Activities = () => {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    fetch(`\effective-journey-6v49wjvrr75c5j5r-8000.app.github.dev\/api\/activities\/`)
+    fetch(`https://effective-journey-6v49wjvrr75c5j5r-8000.app.github.dev\/api\/activities\/`)
       .then(response => response.json())
       .then(data => setActivities(data))
       .catch(error => console.error('Error fetching activities:', error));
