@@ -7,27 +7,28 @@ class Command(BaseCommand):
     help = 'Populate the database with test data for users, teams, activity, leaderboard, and workouts'
 
     def handle(self, *args, **kwargs):
-
-    # Delete all objects
-    User.objects.all().delete()
-    Team.objects.all().delete()
-    Activity.objects.all().delete()
-    Leaderboard.objects.all().delete()
-        
+        # Delete all objects in correct order to avoid FK/array reference issues
+        # First, clear all team members to avoid Djongo unhashable error
+        for team in Team.objects.all():
+            team.members.clear()
+        Team.objects.all().delete()
+        Activity.objects.all().delete()
+        Leaderboard.objects.all().delete()
+        Workout.objects.all().delete()
+        for user in User.objects.exclude(id=None):
+            user.delete()
 
         # Create users
-        users = [
-            User(username='thundergod', email='thundergod@mhigh.edu', password='thundergodpassword'),
-            User(username='metalgeek', email='metalgeek@mhigh.edu', password='metalgeekpassword'),
-            User(username='zerocool', email='zerocool@mhigh.edu', password='zerocoolpassword'),
-            User(username='crashoverride', email='crashoverride@mhigh.edu', password='crashoverridepassword'),
-            User(username='sleeptoken', email='sleeptoken@mhigh.edu', password='sleeptokenpassword'),
+        users_to_create = [
+            {'username': 'thundergod', 'email': 'thundergod@mhigh.edu', 'password': 'thundergodpassword'},
+            {'username': 'metalgeek', 'email': 'metalgeek@mhigh.edu', 'password': 'metalgeekpassword'},
+            {'username': 'zerocool', 'email': 'zerocool@mhigh.edu', 'password': 'zerocoolpassword'},
+            {'username': 'crashoverride', 'email': 'crashoverride@mhigh.edu', 'password': 'crashoverridepassword'},
+            {'username': 'sleeptoken', 'email': 'sleeptoken@mhigh.edu', 'password': 'sleeptokenpassword'},
         ]
-        User.objects.bulk_create(users)
-        users = list(User.objects.all())
-        User.objects.bulk_create(users)
-        users = list(User.objects.all())
-
+        for user_data in users_to_create:
+            User(**user_data).save()
+        users = list(User.objects.exclude(id=None))
 
         # Create teams
         blue_team = Team(name='Blue Team')
@@ -39,7 +40,6 @@ class Command(BaseCommand):
         for user in users[3:]:
             gold_team.members.add(user)
 
-
         # Create activities
         activities = [
             Activity(user=users[0], activity_type='Cycling', duration=timedelta(hours=1)),
@@ -48,8 +48,8 @@ class Command(BaseCommand):
             Activity(user=users[3], activity_type='Strength', duration=timedelta(minutes=30)),
             Activity(user=users[4], activity_type='Swimming', duration=timedelta(hours=1, minutes=15)),
         ]
-        Activity.objects.bulk_create(activities)
-
+        for activity in activities:
+            activity.save()
 
         # Create leaderboard entries
         leaderboard_entries = [
@@ -60,7 +60,6 @@ class Command(BaseCommand):
             Leaderboard(user=users[4], score=80),
         ]
         Leaderboard.objects.bulk_create(leaderboard_entries)
-
 
         # Create workouts
         workouts = [
