@@ -14,7 +14,7 @@ def api_root(request, format=None):
 
 
 	# Dynamically build Codespace URL
-	codespace_name = os.environ.get('CODESPACE_NAME')
+	codespace_name = 'curly-robot-p7pj9x7gg5r39rv5'
 	if codespace_name:
 		CODESPACE_URL = f'https://{codespace_name}-8000.app.github.dev/'
 	else:
