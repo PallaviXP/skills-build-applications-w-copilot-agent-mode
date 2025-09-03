@@ -129,9 +129,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-# Codespace Django REST API endpoint suffix (for use in frontend/API clients)
+# Codespace Django REST API endpoint suffix
 import os
-CODESPACE_API_SUFFIX = os.environ.get('CODESPACE_API_SUFFIX', '/api/')
+CODESPACE_API_SUFFIX = '/api/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
