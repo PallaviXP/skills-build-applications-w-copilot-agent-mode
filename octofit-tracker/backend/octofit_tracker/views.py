@@ -1,3 +1,6 @@
+
+import os
+from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -9,20 +12,27 @@ def api_root(request, format=None):
 	if request.method == 'POST':
 		return Response({"message": "POST request received"}, status=status.HTTP_201_CREATED)
 
-	# Use Codespace URL if available, otherwise fallback to localhost
-	CODESPACE_URL = 'https://curly-robot-p7pj9x7gg5r39rv5-8000.app.github.dev/'
-	LOCAL_URL = 'http://localhost:8000/'
+
+	# Dynamically build Codespace URL
+	codespace_name = os.environ.get('CODESPACE_NAME')
+	if codespace_name:
+		CODESPACE_URL = f'https://{codespace_name}-8000.app.github.dev/'
+	else:
+		CODESPACE_URL = 'http://localhost:8000/'
+
+	API_SUFFIX = getattr(settings, 'CODESPACE_API_SUFFIX', '/api/')
+
 	return Response({
-		'users': CODESPACE_URL + 'api/users/?format=api',
-		'teams': CODESPACE_URL + 'api/teams/?format=api',
-		'activity': CODESPACE_URL + 'api/activity/?format=api',
-		'leaderboard': CODESPACE_URL + 'api/leaderboard/?format=api',
-		'workouts': CODESPACE_URL + 'api/workouts/?format=api',
-		'users_local': LOCAL_URL + 'api/users/?format=api',
-		'teams_local': LOCAL_URL + 'api/teams/?format=api',
-		'activity_local': LOCAL_URL + 'api/activity/?format=api',
-		'leaderboard_local': LOCAL_URL + 'api/leaderboard/?format=api',
-		'workouts_local': LOCAL_URL + 'api/workouts/?format=api',
+		'users': CODESPACE_URL + f'{API_SUFFIX}users/?format=api',
+		'teams': CODESPACE_URL + f'{API_SUFFIX}teams/?format=api',
+		'activity': CODESPACE_URL + f'{API_SUFFIX}activity/?format=api',
+		'leaderboard': CODESPACE_URL + f'{API_SUFFIX}leaderboard/?format=api',
+		'workouts': CODESPACE_URL + f'{API_SUFFIX}workouts/?format=api',
+		'users_local': 'http://localhost:8000/' + f'{API_SUFFIX}users/?format=api',
+		'teams_local': 'http://localhost:8000/' + f'{API_SUFFIX}teams/?format=api',
+		'activity_local': 'http://localhost:8000/' + f'{API_SUFFIX}activity/?format=api',
+		'leaderboard_local': 'http://localhost:8000/' + f'{API_SUFFIX}leaderboard/?format=api',
+		'workouts_local': 'http://localhost:8000/' + f'{API_SUFFIX}workouts/?format=api',
 	})
 
 class UserViewSet(viewsets.ModelViewSet):
